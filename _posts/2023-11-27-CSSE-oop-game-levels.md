@@ -61,24 +61,6 @@ image: /images/platformer/backgrounds/hills.png
   import GameEnv from '{{site.baseurl}}/assets/js/platformer/GameEnv.js';
   import GameLevel from '{{site.baseurl}}/assets/js/platformer/GameLevel.js';
   import GameControl from '{{site.baseurl}}/assets/js/platformer/GameControl.js';
-  import Character from './Character.js';
-  import GameEnv from './GameEnv.js';
-
-  export class Enemy extends Character {
-    // constructors sets up Character object 
-    constructor(canvas, image, speedRatio, enemyData){
-      super(canvas, 
-            image, 
-            speedRatio,
-            enemyData.width, 
-            enemyData.height, 
-      );
-
-      // Player Data is required for Animations
-      this.enemyData = enemyData;
-    }
-  }
-  export default Enemy
 
 
     /*  ==========================================
@@ -317,6 +299,15 @@ image: /images/platformer/backgrounds/hills.png
         a: { row: 1, frames: 15, idleFrame: { column: 7, frames: 0 } },
         s: { row: 12, frames: 15 },
         d: { row: 0, frames: 15, idleFrame: { column: 7, frames: 0 } }
+      }
+    }
+  };
+  var assets {
+    enemies: {
+      goomba: {
+        src: "/images/platformer/sprites/goomba.png",
+        width: 448,
+        height: 452,
       }
     }
   };
