@@ -11,6 +11,7 @@ class GameLevel {
         this.tag = gameObject?.tag;
         this.backgroundImg = gameObject.background?.file;
         this.platformImg = gameObject.platform?.file;
+        this.platformOImg = gameObject.platformO?.file;
         this.playerImg = gameObject.player?.file;
         this.playerData = gameObject?.player;
         this.tubeImg = gameObject.tube?.file;
@@ -29,6 +30,11 @@ class GameLevel {
         if (this.platformImg) {
             imagesToLoad.push(this.loadImage(this.platformImg));
         }
+
+        if (this.platformOImg) {
+            imagesToLoad.push(this.loadImage(this.platformOImg));
+        }
+
         if (this.playerImg) {
             imagesToLoad.push(this.loadImage(this.playerImg));
         }
