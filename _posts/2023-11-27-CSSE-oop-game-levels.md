@@ -3,7 +3,7 @@ layout: base
 title: Dynamic Game Levels
 description: Early steps in adding levels to an OOP Game.  This includes basic animations left-right-jump, multiple background, and simple callback to terminate each level.
 type: ccc
-courses: { csse: {week: 14}, csp: {week: 14}, csa: {week: 14} }
+courses: { csse: {week: 14}}
 image: /images/platformer/backgrounds/hills.png
 ---
 
@@ -57,10 +57,28 @@ image: /images/platformer/backgrounds/hills.png
 
 <!-- regular game -->
 <script type="module">
-    // Imports
-    import GameEnv from '{{site.baseurl}}/assets/js/platformer/GameEnv.js';
-    import GameLevel from '{{site.baseurl}}/assets/js/platformer/GameLevel.js';
-    import GameControl from '{{site.baseurl}}/assets/js/platformer/GameControl.js';
+  // Imports
+  import GameEnv from '{{site.baseurl}}/assets/js/platformer/GameEnv.js';
+  import GameLevel from '{{site.baseurl}}/assets/js/platformer/GameLevel.js';
+  import GameControl from '{{site.baseurl}}/assets/js/platformer/GameControl.js';
+  import Character from './Character.js';
+  import GameEnv from './GameEnv.js';
+
+  export class Enemy extends Character {
+    // constructors sets up Character object 
+    constructor(canvas, image, speedRatio, enemyData){
+      super(canvas, 
+            image, 
+            speedRatio,
+            enemyData.width, 
+            enemyData.height, 
+      );
+
+      // Player Data is required for Animations
+      this.enemyData = enemyData;
+    }
+  }
+  export default Enemy
 
 
     /*  ==========================================
@@ -69,7 +87,7 @@ image: /images/platformer/backgrounds/hills.png
     */
 
     // Define assets for the game
-    var assets = {
+  var assets = {
       obstacles: {
         tube: { src: "/images/platformer/obstacles/tube.png" },
       },
@@ -108,14 +126,52 @@ image: /images/platformer/backgrounds/hills.png
           d: { row: 0, frames: 15, idleFrame: { column: 7, frames: 0 } }
         }
       }
-    };
+  };
+  var assets {
+    enemies: {
+      goomba: {
+        src: "/images/platformer/sprites/goomba.png",
+        width: 448,
+        height: 452,
+      }
+    }
+  };
+
+  update() {
+    // Check if the enemy is at the left or right boundary
+    if (this.x <= 0 || this.x + this.width >= GameEnv.innerWidth) {
+      // Change direction by reversing the speed
+      this.speed = -this.speed;
+    }
+
+    //Initially get the enemy moving
+    this.x += this.speed;
+
+  }
+  // Enemy collision
+  if (this.collisionData.touchPoints.other.id === "enemy") {
+    // Collision with the left side of the Enemy
+    if (this.collisionData.touchPoints.other.left) {
+      // Kill Player (Reset Game)
+    }
+    // Collision with the right side of the Enemy
+    if (this.collisionData.touchPoints.other.right) {
+      deathController.setDeath(1);
+      // Kill Player (Reset Game)
+    }
+    // Collision with the top of the Enemy
+    if (this.collisionData.touchPoints.other.ontop) {
+      // Kill Goomba
+      // Make Mario Bounce
+    }
+  }
 
     // add File to assets, ensure valid site.baseurl
-    Object.keys(assets).forEach(category => {
-      Object.keys(assets[category]).forEach(assetName => {
-        assets[category][assetName]['file'] = "{{site.baseurl}}" + assets[category][assetName].src;
+  Object.keys(assets).forEach(category => {
+    Object.keys(assets[category]).forEach(assetName => {
+      assets[category][assetName]['file'] = "{{site.baseurl}}" + assets[category][assetName].src;
       });
-    });
+  });
 
     /*  ==========================================
      *  ===== Game Level Call Backs ==============
@@ -190,7 +246,7 @@ image: /images/platformer/backgrounds/hills.png
     new GameLevel( {tag: "start", callback: startGameCallback } );
     new GameLevel( {tag: "home", background: assets.backgrounds.start, callback: homeScreenCallback } );
     // Game screens
-    new GameLevel( {tag: "hills", background: assets.backgrounds.hills, platform: assets.platforms.grass, player: assets.players.mario, tube: assets.obstacles.tube, callback: testerCallBack } );
+    new GameLevel( {tag: "hills", background: assets.backgrounds.hills, platform: assets.platforms.grass, player: assets.players.mario, enemy: assets.enemies.goomba, tube: assets.obstacles.tube, callback: testerCallBack } );
     new GameLevel( {tag: "alien", background: assets.backgrounds.planet, platform: assets.platforms.alien, player: assets.players.monkey, callback: testerCallBack } );
     // Game Over screen
     new GameLevel( {tag: "end", background: assets.backgrounds.end, callback: gameOverCallBack } );
@@ -230,12 +286,12 @@ image: /images/platformer/backgrounds/hills.png
     },
     platforms: {
       grass: { src: "/images/platformer/platforms/pigfarm.png"},
-      alien: { src: "/images/platformer/platforms/alien.png" }
+      alien: { src: "/images/platformer/platforms/carpet.png" }
     },
     backgrounds: {
       start: { src: "/images/platformer/backgrounds/Joke.jpg" },
       hills: { src: "/images/platformer/backgrounds/GD_Background.png" },
-      planet: { src: "/images/platformer/backgrounds/planet.jpg" },
+      planet: { src: "/images/platformer/backgrounds/Del_Norte.png" },
       castles: { src: "/images/platformer/backgrounds/castles.png" },
       end: { src: "/images/platformer/backgrounds/game_over.png" }
     },
