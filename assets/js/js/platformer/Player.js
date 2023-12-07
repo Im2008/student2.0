@@ -137,6 +137,23 @@ export class Player extends Character{
             this.movement.right = true;
             this.movement.down = true;
         }
+        // Enemy collision
+        if (this.collisionData.touchPoints.other.id === "enemy") {
+        // Collision with the left side of the Enemy
+            if (this.collisionData.touchPoints.other.left) {
+            // Kill Player (Reset Game)
+            }
+            // Collision with the right side of the Enemy
+            if (this.collisionData.touchPoints.other.right) {
+                deathController.setDeath(1);
+                // Kill Player (Reset Game)
+            }
+            // Collision with the top of the Enemy
+            if (this.collisionData.touchPoints.other.ontop) {
+            // Kill Goomba
+            // Make Mario Bounce
+            }
+        }
     }
     
     // Event listener key down
@@ -174,6 +191,7 @@ export class Player extends Character{
         // Call the parent class's destroy method
         super.destroy();
     }
+    
 }
 
 

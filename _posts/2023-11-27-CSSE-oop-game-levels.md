@@ -119,35 +119,6 @@ image: /images/platformer/backgrounds/hills.png
     }
   };
 
-  update() {
-    // Check if the enemy is at the left or right boundary
-    if (this.x <= 0 || this.x + this.width >= GameEnv.innerWidth) {
-      // Change direction by reversing the speed
-      this.speed = -this.speed;
-    }
-
-    //Initially get the enemy moving
-    this.x += this.speed;
-
-  }
-  // Enemy collision
-  if (this.collisionData.touchPoints.other.id === "enemy") {
-    // Collision with the left side of the Enemy
-    if (this.collisionData.touchPoints.other.left) {
-      // Kill Player (Reset Game)
-    }
-    // Collision with the right side of the Enemy
-    if (this.collisionData.touchPoints.other.right) {
-      deathController.setDeath(1);
-      // Kill Player (Reset Game)
-    }
-    // Collision with the top of the Enemy
-    if (this.collisionData.touchPoints.other.ontop) {
-      // Kill Goomba
-      // Make Mario Bounce
-    }
-  }
-
     // add File to assets, ensure valid site.baseurl
   Object.keys(assets).forEach(category => {
     Object.keys(assets[category]).forEach(assetName => {

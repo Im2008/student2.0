@@ -13,6 +13,19 @@ import GameEnv from './GameEnv.js';
 
       // Player Data is required for Animations
       this.enemyData = enemyData;
-    }
-  }
+    };
+  };
+
+  update() ;{
+    // Check if the enemy is at the left or right boundary
+    if (this.x <= 0 || this.x + this.width >= GameEnv.innerWidth) {
+        // Change direction by reversing the speed
+        this.speed = -this.speed;
+    };
+
+    //Initially get the enemy moving
+    this.x += this.speed;
+
+  };
+
 export default Enemy
