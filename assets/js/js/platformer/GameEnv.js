@@ -6,7 +6,7 @@ export class GameEnv {
     static gameObjects = [];
 
     // game attributes
-    static gameSpeed = 2;
+    static gameSpeed = 4;
     static gravity = 3;
     static innerWidth;
     static prevInnerWidth;
