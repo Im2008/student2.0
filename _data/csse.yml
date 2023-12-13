@@ -1,0 +1,58 @@
+# course illustrations
+introduction_tools: &introduction_tools |
+    +-----------------+
+    | Laptop, OS      |
+    | Tool Setup      | 
+    +-----------------+
+       |
+       | VS Code,  Markdown, Jupyter Notebook, JavaScript (.md, .html)
+       v
+    +-----------------+
+    | VS Code, Develop|
+    | Code Editor     | 
+    +-----------------+
+       |
+       | Write code, make, run localhost, test, debug
+       v
+    +-----------------+
+    | VS Code, Git    |
+    | Version Control |       | 
+    +-----------------+
+       |
+       | Commit local versions, comment, track changes
+       v
+    +-----------------+
+    | VS Code, Project|
+    | GitHub Sync     |
+    +-----------------+
+       |
+       | Push changes to cloud Repository
+       v
+    +-----------------+
+    | GitHub,  Collab |
+    | Shared Code     |
+    +-----------------+
+       |
+       | Actions, Jekyll build
+       v
+    +-----------------+
+    | GitHub Pages    |
+    | Showcase Project|
+    +-----------------+
+
+# CSSE course meta data
+Sprint4:
+  title: OOP Programming Fundamentals
+  description: Students, in triads, will work on converting Mario game to OOP.  There will be a series of Tech Talks to support this activity.
+  start: 13
+  end: 15
+Sprint5:
+  title: Research, Teaching and Game Innovation
+  description: Algorithmic "Student Team" will have a teaching assignment, the Teacher of Student requests will be providing topics (Local Storage, Pixel art, Phaser.js, RAWG apis).  During Teach weeks teams will research a topic, form a final project "game" plan.
+  start: 16
+  end: 17
+Sprint6:
+  title: Create a Final Project and N@tM 
+  description: Trimester 2 concludes with student presenting their CPT project at N@tM.  Each person within "Student Teams" will have their own specialty within the student project that satisfied all their Create Performance Task requirements.   Student should be able to talk about design, coding, and present features of their portion of the system.
+  start: 18
+  end: 24
