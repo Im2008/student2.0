@@ -1,10 +1,13 @@
 import GameEnv from './GameEnv.js';
 import Background from './Background.js';
+import Background2 from './Background2.js';
 import Platform from './Platform.js';
 import Player from './Player.js';
 import Tube from './Tube.js';
 import Goomba from './Goomba.js'
 import Scaffold from './Scaffold.js';
+import Player2 from './Player2.js';
+import Squid from './Squid.js';
 
 // Store the assets and attributes of the Game at the specific GameLevel.
 class GameLevel {
@@ -12,7 +15,7 @@ class GameLevel {
         // conditional assignments from GameObject to instance variables
         this.tag = gameObject?.tag;
         this.backgroundImg = gameObject.background?.file;
-        this.backgroundImg2 = gameObject.background2?.file;
+        this.background2Img = gameObject.background2?.file;
         this.platformImg = gameObject.platform?.file;
         this.playerImg = gameObject.player?.file;
         this.playerData = gameObject?.player;
@@ -32,8 +35,8 @@ class GameLevel {
         if (this.backgroundImg) {
             imagesToLoad.push(this.loadImage(this.backgroundImg));
         }
-        if (this.backgroundImg2) {
-            imagesToLoad.push(this.loadImage(this.backgroundImg2));
+        if (this.background2Img) {
+            imagesToLoad.push(this.loadImage(this.background2Img));
         }
         if (this.platformImg) {
             imagesToLoad.push(this.loadImage(this.platformImg));
@@ -66,9 +69,10 @@ class GameLevel {
                 i++;
             }
 
-            if (this.backgroundImg2) {
+            // Prepare HTML with Background Canvas (if backgroundImg is defined)
+            if (this.background2Img) {
                 const backgroundCanvas = document.createElement("canvas");
-                backgroundCanvas.id = "background";
+                backgroundCanvas.id = "background2";
                 document.querySelector("#canvasContainer").appendChild(backgroundCanvas);
                 const backgroundSpeedRatio = 0;
                 new Background2(backgroundCanvas, loadedImages[i], backgroundSpeedRatio);
@@ -91,17 +95,27 @@ class GameLevel {
                 playerCanvas.id = "character";
                 document.querySelector("#canvasContainer").appendChild(playerCanvas);
                 const playerSpeedRatio = 0.7;
-                new Player(playerCanvas, loadedImages[i], playerSpeedRatio, this.playerData);
+                if (this.playerData.type == 0){
+                    new Player(playerCanvas, loadedImages[i], playerSpeedRatio, this.playerData);
+                }
+                else{
+                    new Player2(playerCanvas, loadedImages[i], playerSpeedRatio, this.playerData);
+                }
                 i++;
             }
 
             // Prepare HTML with Enenemy Canvas (if enemyImg is defined)
             if (this.enemyImg) {
                 const enemyCanvas = document.createElement("canvas");
-                enemyCanvas.id = "enemy";
                 document.querySelector("#canvasContainer").appendChild(enemyCanvas);
                 const enemySpeedRatio = 0.7;
-                new Goomba(enemyCanvas, loadedImages[i], enemySpeedRatio, this.enemyData);
+                if (this.enemyData.type == 0){
+                    enemyCanvas.id = "enemy";
+                    new Goomba(enemyCanvas, loadedImages[i], enemySpeedRatio, this.enemyData);
+                }else{
+                    enemyCanvas.id = "enemy2";
+                    new Squid(enemyCanvas, loadedImages[i], enemySpeedRatio, this.enemyData);
+                }
                 i++;
             }
 

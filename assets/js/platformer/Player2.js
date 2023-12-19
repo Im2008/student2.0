@@ -2,17 +2,24 @@ import GameEnv from './GameEnv.js';
 import Character from './Character.js';
 import GameControl from './GameControl.js'
 
-export class Player extends Character{
+export class Player2 extends Character{ //for lopez code
     // constructors sets up Character object 
-    constructor(canvas, image, speedRatio, playerData){
+    constructor(canvas, image, speedRatio, playerData,speedLimit){
         super(canvas, 
             image, 
             speedRatio,
             playerData.width, 
             playerData.height, 
         );
+        
         // Player Data is required for Animations
         this.playerData = playerData;
+
+        this.speedLimit = speedLimit;
+        this.currentSpeed = 0;
+        this.acceleration = 0.11; // Adjust based on preference
+        this.deceleration = 0.1; // Adjust based on preference 
+        this.count = 0;
 
         // Player control data
         this.pressedKeys = {};
@@ -103,16 +110,66 @@ export class Player extends Character{
     // Player updates
     update() {
         if (this.isAnimation("a")) {
-            if (this.movement.left) this.x -= this.speed;  // Move to left
-            GameEnv.backgroundSpeed = -this.speed;
+            //if (this.movement.left) this.x -= this.speed;  // Move to left
+            GameEnv.backgroundSpeed = this.currentSpeed;
         }
         if (this.isAnimation("d")) {
-            if (this.movement.right) this.x += this.speed;  // Move to right
-            GameEnv.backgroundSpeed = this.speed;
+            //if (this.movement.right) this.x += this.speed;  // Move to right
+            GameEnv.backgroundSpeed = this.currentSpeed;
         }
         if (this.isGravityAnimation("w")) {
             if (this.movement.down) this.y -= (this.bottom * .4);  // jump 11% higher than bottom
         } 
+
+        if (this.pressedKeys['a'] && this.currentSpeed <= 0 && this.y >= this.bottom) {
+            this.currentSpeed -= this.acceleration;
+        } else if (this.pressedKeys['d'] && this.currentSpeed >= 0 && this.y >= this.bottom) {
+            this.currentSpeed += this.acceleration;
+        } else if (this.pressedKeys['a'] && this.currentSpeed > 0){
+            // Decelerate faster when going opposite direction
+            this.currentSpeed -= this.acceleration*2;
+        } else if (this.pressedKeys['d'] && this.currentSpeed < 0){
+            // Decelerate faster when going opposite direction
+            this.currentSpeed += this.acceleration*2;
+        } else if (this.y >= this.bottom){
+            // Decelerate when no movement keys are pressed
+            this.currentSpeed *= (1 - this.deceleration);
+        }
+
+        // Apply speed limit
+        if (Math.abs(this.currentSpeed) > this.speedLimit) {
+            this.currentSpeed = this.currentSpeed > 0 ? this.speedLimit : -this.speedLimit;
+        }
+
+        this.x += this.currentSpeed;
+
+        // Check for speed threshold to change sprite sheet rows
+        const walkingSpeedThreshold = 1; // Walking speed threshold
+        const runningSpeedThreshold = 5; // Running speed threshold
+
+        if (Math.abs(this.currentSpeed) >= runningSpeedThreshold) {
+            this.count = 0;
+            // Change sprite sheet row for running
+            if (this.currentSpeed > 0) {
+            this.setFrameY(this.playerData.runningRight.row);
+            } else {
+                this.setFrameY(this.playerData.runningLeft.row);
+            }
+        } else if (Math.abs(this.currentSpeed) >= walkingSpeedThreshold) {
+            this.count = 0;
+            // Change sprite sheet row for walking
+            if (this.currentSpeed > 0) {
+                this.setFrameY(this.playerData.d.row);
+            } else {
+                this.setFrameY(this.playerData.a.row);
+            }
+        } else if (this.currentSpeed < walkingSpeedThreshold && this.y >= this.bottom){
+            this.count += 1;
+        // Revert to normal animation if speed is below the walking threshold
+            if (this.count >= GameEnv.frameRate*2){ //if 2 seconds have passed
+            this.setFrameY(this.playerData.idle.row);
+            }
+        }
 
         // Perform super update actions
         super.update();
@@ -150,13 +207,13 @@ export class Player extends Character{
                 this.movement.left = false;
             }
             // Collision with the top of the player
-            if (this.collisionData.touchPoints.other.ontop) {
+            if (this.collisionData.touchPoints.this.ontop) {
                 this.gravityEnabled = false;
                 this.topOfPlatform = true; 
             }
-            //if (this.collisionData.touchPoints.this.top) {//checks if character mid is halfway above the scaffold mid 
-            //    this.gravityEnabled = false;
-            //}
+            if (this.collisionData.touchPoints.this.top) {
+                this.gravityEnabled = false;
+            }
             //if (this.collisionData.touchPoints.this.top) {
             //    this.gravityEnabled = false;
             //    
@@ -174,7 +231,7 @@ export class Player extends Character{
         }
 
         if (this.collisionData.touchPoints.other.id === "enemy") {
-            if (this.y >= this.bottom){ //you died -- you're touching the ground
+            if (this.y >= this.bottom){ //you died
                 //reload current level (death)
                 GameControl.transitionToLevel(GameEnv.levels[GameEnv.levels.indexOf(GameEnv.currentLevel)]);
             }
@@ -182,7 +239,6 @@ export class Player extends Character{
                 this.y -= this.bottom*.2;//bounce
                 for(let i = 0; i<GameEnv.gameObjects.length;i++){//loop through current gameObjects
                     if(GameEnv.gameObjects[i].isGoomba){ //look for object with (isGoomba==true) tag
-                        //get goomba canvas
                         var goomba = GameEnv.gameObjects[i].canvas; 
 
                         //remove goomba object
@@ -195,15 +251,9 @@ export class Player extends Character{
                         setTimeout(()=>{
                              goomba.remove(); //remove goomba sprite from current level
                         },600)
-                
                     }
                 }
             }
-        }
-
-        if (this.collisionData.touchPoints.other.id === "enemy2") {
-            //reload current level (death)
-            GameControl.transitionToLevel(GameEnv.levels[GameEnv.levels.indexOf(GameEnv.currentLevel)]);
         }
     }
     
@@ -229,8 +279,8 @@ export class Player extends Character{
             }
             this.setAnimation(key);  
             // player idle
-            this.isIdle = true;   
-            GameEnv.backgroundSpeed = 0;  
+            this.isIdle = true;  
+            GameEnv.backgroundSpeed = 0;     
         }
     }
 
@@ -246,4 +296,4 @@ export class Player extends Character{
 }
 
 
-export default Player;
+export default Player2;

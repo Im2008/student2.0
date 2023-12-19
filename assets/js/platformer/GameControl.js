@@ -14,8 +14,9 @@ const GameControl = {
     async transitionToLevel(newLevel) {
         this.inTransition = true;
 
-        // Destroy existing game objects
+        // Destroy existing game objects/ reset background speed
         GameEnv.destroy();
+        GameEnv.backgroundSpeed = 0;
 
         // Load GameLevel objects
         await newLevel.load();
@@ -58,7 +59,7 @@ const GameControl = {
         }
 
         // recycle gameLoop, aka recursion
-        setTimeout(requestAnimationFrame(this.gameLoop.bind(this)),1000/60);  
+        setTimeout(requestAnimationFrame(this.gameLoop.bind(this)),1000/GameEnv.frameRate);  
     },
 };
 

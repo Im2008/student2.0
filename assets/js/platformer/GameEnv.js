@@ -6,10 +6,9 @@ export class GameEnv {
     static gameObjects = [];
 
     // game attributes
-    static backgroundSpeed = 0;
-    static backgroundSpeed2 = 0;
     static gameSpeed = 2;
     static gravity = 3;
+    static frameRate = 60;
     static innerWidth;
     static prevInnerWidth;
     static innerHeight;
@@ -25,13 +24,15 @@ export class GameEnv {
     // canvas filter property
     static isInverted = true;
 
+    //background speeds
+    static backgroundSpeed = 0;
+
     // Make the constructor private to prevent instantiation
     constructor() {
         throw new Error('GameEnv is a static class and cannot be instantiated.');
     }
 
     static update() {
-        
         // Update game state, including all game objects
         for (const gameObject of GameEnv.gameObjects) {
             gameObject.update();
