@@ -208,7 +208,7 @@ image: /images/platformer/backgrounds/hills.png
           grass: { src: "/images/platformer/obstacles/grassScaffold.png" }, //need to import image
       },
       audio: {
-          pink: { src: "/audio/platformer/pink.mp3" },
+          pink: { src: "/audio/platformer/Harharhar.mp3" },
           space: { src: "/audio/platformer/space.mp3" },
           honor: { src: "/audio/platformer/honor.mp3" }
       }
