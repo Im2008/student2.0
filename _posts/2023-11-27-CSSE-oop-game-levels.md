@@ -23,6 +23,8 @@ image: /images/platformer/backgrounds/hills.png
       padding-top: 60px; /* Place content 60px from the top */
       transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
       background-color: black;
+      border-style: dotted;
+      border-color: green;
     }
 
     .timer{
@@ -123,7 +125,7 @@ image: /images/platformer/backgrounds/hills.png
         redCarpet: { src: "/images/platformer/platforms/redPixel.png"}
       },
       backgrounds: {
-        start: { src: "/images/platformer/backgrounds/home.png" },
+        start: { src: "/images/platformer/backgrounds/Joke.jpg" },
         joke: { src: "/images/platformer/backgrounds/Joke.jpg" },
         hills: { src: "/images/platformer/backgrounds/hills.png" },
         geometry: { src: "/images/platformer/backgrounds/GD_Background.png" },
@@ -210,7 +212,8 @@ image: /images/platformer/backgrounds/hills.png
       audio: {
           pink: { src: "/audio/platformer/Harharhar.mp3" },
           space: { src: "/audio/platformer/space.mp3" },
-          honor: { src: "/audio/platformer/honor.mp3" }
+          honor: { src: "/audio/platformer/honor.mp3" },
+          buzzer: { src: "/audio/platformer/UWU.mp3" }
       }
     };
 
@@ -313,7 +316,7 @@ image: /images/platformer/backgrounds/hills.png
     */
     // Start/Home screens
     new GameLevel( {tag: "start", callback: startGameCallback } );
-    new GameLevel( {tag: "home", background: assets.backgrounds.start, callback: homeScreenCallback } );
+    new GameLevel( {tag: "home", background: assets.backgrounds.start, audio: assets.audio.buzzer, callback: homeScreenCallback } );
     // Game screens
 
     //geometry dash background with mario character
