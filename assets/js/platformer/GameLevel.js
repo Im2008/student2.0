@@ -8,6 +8,7 @@ import Goomba from './Goomba.js'
 import Scaffold from './Scaffold.js';
 import Player2 from './Player2.js';
 import Squid from './Squid.js';
+import Mushroom from './Mushroom.js';
 
 // Store the assets and attributes of the Game at the specific GameLevel.
 class GameLevel {
@@ -23,7 +24,9 @@ class GameLevel {
         this.enemyData = gameObject?.enemy;
         this.tubeImg = gameObject.tube?.file;
         this.scaffoldImg = gameObject.scaffold?.file;
-        this.Audio = gameObject.audio
+        this.Audio = gameObject.audio;
+        this.powerImg =  gameObject.power?.file;
+        this.powerData =  gameObject?.power;
         this.isComplete = gameObject?.callback; // function that determines if level is complete
         GameEnv.levels.push(this);
     }
@@ -45,11 +48,14 @@ class GameLevel {
         if (this.playerImg) {
             imagesToLoad.push(this.loadImage(this.playerImg));
         }
-        if (this.tubeImg) {
-            imagesToLoad.push(this.loadImage(this.tubeImg));
-        }
         if (this.enemyImg) {
             imagesToLoad.push(this.loadImage(this.enemyImg));
+        }
+        if (this.powerImg) {
+            imagesToLoad.push(this.loadImage(this.powerImg));
+        }
+        if (this.tubeImg) {
+            imagesToLoad.push(this.loadImage(this.tubeImg));
         }
         if (this.scaffoldImg) {
             imagesToLoad.push(this.loadImage(this.scaffoldImg));
@@ -104,14 +110,14 @@ class GameLevel {
             // Prepare HTML with Player Canvas (if playerImg is defined)
             if (this.playerImg) {
                 const playerCanvas = document.createElement("canvas");
-                playerCanvas.id = "character";
+                playerCanvas.id = "character" + GameEnv.id;
                 document.querySelector("#canvasContainer").appendChild(playerCanvas);
                 const playerSpeedRatio = 0.7;
                 if (this.playerData.type == 0){
-                    new Player(playerCanvas, loadedImages[i], playerSpeedRatio, this.playerData);
+                    new Player(playerCanvas, loadedImages[i], playerSpeedRatio, this.playerData,true);
                 }
                 else{
-                    new Player2(playerCanvas, loadedImages[i], playerSpeedRatio, this.playerData);
+                    new Player2(playerCanvas, loadedImages[i], playerSpeedRatio, this.playerData,true);
                 }
                 i++;
             }
@@ -127,6 +133,18 @@ class GameLevel {
                 }else{
                     enemyCanvas.id = "enemy2";
                     new Squid(enemyCanvas, loadedImages[i], enemySpeedRatio, this.enemyData);
+                }
+                i++;
+            }
+
+            // Prepare HTML with Enenemy Canvas (if enemyImg is defined)
+            if (this.powerImg) {
+                const powerCanvas = document.createElement("canvas");
+                document.querySelector("#canvasContainer").appendChild(powerCanvas);
+                const powerSpeedRatio = 0.7;
+                if (this.powerData.type == 0){
+                    powerCanvas.id = "power";
+                    new Mushroom(powerCanvas, loadedImages[i], powerSpeedRatio, this.powerData);
                 }
                 i++;
             }
@@ -154,6 +172,31 @@ class GameLevel {
             console.error('Failed to load one or more images:', error);
         }
 
+    }
+
+    async addCharacter(id) {
+        const loadedImage = await this.loadImage(this.playerImg);
+
+        // search for player (prevent dupliactes after the `await`)
+        for (var gameObj of GameEnv.gameObjects) {
+            if (gameObj.canvas.id === "character" + id) {
+                return gameObj
+            }
+        }
+
+        // Prepare HTML with Player Canvas (if playerImg is defined)
+        if (this.playerImg) {
+            const playerCanvas = document.createElement("canvas");
+            playerCanvas.id = id;
+            document.querySelector("#canvasContainer").appendChild(playerCanvas);
+            const playerSpeedRatio = 0.7;
+            if (this.playerData.type == 0){
+                return new Player(playerCanvas, loadedImage, playerSpeedRatio, this.playerData,false);
+            }
+            else{
+                return new Player2(playerCanvas, loadedImage, playerSpeedRatio, this.playerData,false);
+            }
+        }
     }
 
     // Create a function to load an image and return a Promise

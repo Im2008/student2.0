@@ -23,8 +23,6 @@ image: /images/platformer/backgrounds/hills.png
       padding-top: 60px; /* Place content 60px from the top */
       transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
       background-color: black;
-      border-style: dotted;
-      border-color: green;
     }
 
     .timer{
@@ -125,7 +123,7 @@ image: /images/platformer/backgrounds/hills.png
         redCarpet: { src: "/images/platformer/platforms/redPixel.png"}
       },
       backgrounds: {
-        start: { src: "/images/platformer/backgrounds/Joke.jpg" },
+        start: { src: "/images/platformer/backgrounds/home.png" },
         joke: { src: "/images/platformer/backgrounds/Joke.jpg" },
         hills: { src: "/images/platformer/backgrounds/hills.png" },
         geometry: { src: "/images/platformer/backgrounds/GD_Background.png" },
@@ -203,17 +201,24 @@ image: /images/platformer/backgrounds/hills.png
           width: 190,
           height: 175,
           animation: {row: 0, frames: 3},
-        }
+        },
       },
       scaffolds: {
           brick: { src: "/images/platformer/obstacles/brick.png" }, //need to import image
           grass: { src: "/images/platformer/obstacles/grassScaffold.png" }, //need to import image
       },
       audio: {
-          pink: { src: "/audio/platformer/Harharhar.mp3" },
+          pink: { src: "/audio/platformer/pink.mp3" },
           space: { src: "/audio/platformer/space.mp3" },
-          honor: { src: "/audio/platformer/honor.mp3" },
-          buzzer: { src: "/audio/platformer/UWU.mp3" }
+          honor: { src: "/audio/platformer/honor.mp3" }
+      },
+      powers: {
+        mushroom: {// fake enemy
+          src: "/images/platformer/sprites/mushroom.png",
+          type: 0,
+          width: 4000,
+          height: 4000,
+        }
       }
     };
 
@@ -283,6 +288,7 @@ image: /images/platformer/backgrounds/hills.png
       if (!leaderboardObject["gameOverScreenShown"]) {
         const playerScore = document.getElementById("timeScore").innerHTML;
         const playerName = prompt(`You scored ${playerScore}! What is your name?`);
+        if(playerName != null){
         let temp = leaderboardObject["leaderboard"];
         temp += playerName + "," + playerScore.toString() + ";";
         leaderboardObject["leaderboard"] = temp;
@@ -290,6 +296,7 @@ image: /images/platformer/backgrounds/hills.png
         leaderboardObject["gameOverScreenShown"] = true;
 
         leaderboardObject.saveAll();
+        }
       }
 
       // Use waitForRestart to wait for the restart button click
@@ -316,15 +323,15 @@ image: /images/platformer/backgrounds/hills.png
     */
     // Start/Home screens
     new GameLevel( {tag: "start", callback: startGameCallback } );
-    new GameLevel( {tag: "home", background: assets.backgrounds.start, audio: assets.audio.buzzer, callback: homeScreenCallback } );
+    new GameLevel( {tag: "home", background: assets.backgrounds.start, callback: homeScreenCallback } );
     // Game screens
 
     //geometry dash background with mario character
-    new GameLevel( {tag: "geometry", background: assets.backgrounds.geometry, platform: assets.platforms.grass, player: assets.players.mario, tube: assets.obstacles.tube, scaffold: assets.scaffolds.brick, callback: testerCallBack } );
+    new GameLevel( {tag: "geometry", background: assets.backgrounds.geometry, platform: assets.platforms.grass, player: assets.players.mario, tube: assets.obstacles.tube, scaffold: assets.scaffolds.brick, power: assets.powers.mushroom, callback: testerCallBack } );
     //monkey in an alien world
     new GameLevel( {tag: "alien", background: assets.backgrounds.planet, platform: assets.platforms.alien, player: assets.players.monkey, enemy: assets.enemies.goomba, callback: testerCallBack } );
     //mr lopez in a classic mario level
-    new GameLevel( {tag: "lopez", background: assets.backgrounds.clouds, background2: assets.backgrounds.hills, platform: assets.platforms.grass, scaffold: assets.scaffolds.grass, player: assets.players.lopez, enemy: assets.enemies.goomba, audio: assets.audio.honor, callback: testerCallBack } );
+    new GameLevel( {tag: "lopez", background: assets.backgrounds.clouds, background2: assets.backgrounds.hills, platform: assets.platforms.grass, scaffold: assets.scaffolds.grass, player: assets.players.lopez, enemy: assets.enemies.goomba, audio: assets.audio.honor, power:assets.powers.mushroom, callback: testerCallBack } );
     //level based on Trystan's game from last tri.
      new GameLevel( {tag: "the move", background: assets.backgrounds.theMove, platform: assets.platforms.redCarpet, player: assets.players.jaden, enemy: assets.enemies.squid, audio: assets.audio.pink, callback: testerCallBack } );
     //level with greenPlanet background
@@ -356,42 +363,70 @@ image: /images/platformer/backgrounds/hills.png
     toggle = !toggle;
     document.getElementById("mySidebar").style.width = toggle?"250px":"0px";
   }
-  document.getElementById("toggleSettingsBar").addEventListener("click",toggleWidth);
-  document.getElementById("toggleSettingsBar1").addEventListener("click",toggleWidth);
+  document.getElementById("toggleNavigationBar").addEventListener("click",toggleWidth);
+  document.getElementById("toggleNavigationBar1").addEventListener("click",toggleWidth);
+  //generate table
+  import GameEnv from '{{site.baseurl}}/assets/js/platformer/GameEnv.js';
+  import GameLevel from '{{site.baseurl}}/assets/js/platformer/GameLevel.js';
+  import GameControl from '{{site.baseurl}}/assets/js/platformer/GameControl.js';
+  var levels = GameEnv.levels;
+  var assets = {
+    obstacles: {
+      tube: { src: "/images/platformer/obstacles/tube.png" },
+    },
+    platforms: {
+      grass: { src: "/images/platformer/platforms/pigfarm.png"},
+      alien: { src: "/images/platformer/platforms/alien.png" }
+    },
+    backgrounds: {
+      start: { src: "/images/platformer/backgrounds/Joke.jpg" },
+      hills: { src: "/images/platformer/backgrounds/GD_Background.png" },
+      planet: { src: "/images/platformer/backgrounds/planet.jpg" },
+      castles: { src: "/images/platformer/backgrounds/castles.png" },
+      end: { src: "/images/platformer/backgrounds/game_over.png" }
+    },
+    players: {
+      mario: {
+        src: "/images/platformer/sprites/mario.png",
+        width: 256,
+        height: 256,
+        w: { row: 10, frames: 15 },
+        wa: { row: 11, frames: 15 },
+        wd: { row: 10, frames: 15 },
+        a: { row: 3, frames: 7, idleFrame: { column: 7, frames: 0 } },
+        s: { row: null, frames: null},
+        d: { row: 2, frames: 7, idleFrame: { column: 7, frames: 0 } }
+      },
+      monkey: {
+        src: "/images/platformer/sprites/monkey.png",
+        width: 40,
+        height: 40,
+        w: { row: 9, frames: 15 },
+        wa: { row: 9, frames: 15 },
+        wd: { row: 9, frames: 15 },
+        a: { row: 1, frames: 15, idleFrame: { column: 7, frames: 0 } },
+        s: { row: 12, frames: 15 },
+        d: { row: 0, frames: 15, idleFrame: { column: 7, frames: 0 } }
+      }
+    }
+  };
 
-  // Generate table
-  import Controller from '{{site.baseurl}}/assets/js/platformer/Controller.js';
-  
-  var myController = new Controller();
-  myController.initialize();
+    var placeAfterElement = document.getElementById("navigationPlaceAfter");
 
-  var table = myController.levelTable;
-  document.getElementById("mySidebar").append(table);
-  
-
-  var div = myController.speedDiv;
-  document.getElementById("mySidebar").append(div);
-
-
-  var div2 = myController.gravityDiv;
-  document.getElementById("mySidebar").append(div2);
-    //for(let i=levels.length-1;i>-1;i-=1){
-    //  var row = document.createElement("tr");
-    //  var c1 = document.createElement("td");
-    //  var c2 = document.createElement("td");
-    //  c1.innerText = levels[i].tag;
-    //  if(levels[i].playerData){ //if player exists
-    //      var charImage = new Image();
-    //      charImage.src = "{{site.baseurl}}/"+levels[i].playerData.src;
-    //      //var array = levels[i].playerData.src.split("/");
-    //      //c2.innerText = array[array.length-1];
-    //      c2.append(charImage);
-    //  }
-    //  else{
-    //    c2.innerText = "none";
-    //  }
-    //  row.append(c1);
-    //  row.append(c2);
-    //  placeAfterElement.insertAdjacentElement("afterend",row);
-    //}
+    for(let i=levels.length-1;i>-1;i-=1){
+      var row = document.createElement("tr");
+      var c1 = document.createElement("td");
+      var c2 = document.createElement("td");
+      c1.innerText = levels[i].tag;
+      if(levels[i].playerData){ //if player exists
+        var array = levels[i].playerData.src.split("/");
+        c2.innerText = array[array.length-1];
+      }
+      else{
+        c2.innerText = "none";
+      }
+      row.append(c1);
+      row.append(c2);
+      placeAfterElement.insertAdjacentElement("afterend",row);
+    }
 </script>

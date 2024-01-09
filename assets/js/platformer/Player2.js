@@ -4,7 +4,7 @@ import GameControl from './GameControl.js'
 
 export class Player2 extends Character{ //for lopez code
     // constructors sets up Character object 
-    constructor(canvas, image, speedRatio, playerData,speedLimit){
+    constructor(canvas, image, speedRatio, playerData,speedLimit,canBeControlled){
         super(canvas, 
             image, 
             speedRatio,
@@ -27,14 +27,16 @@ export class Player2 extends Character{ //for lopez code
         this.isIdle = true;
         this.stashKey = "d"; // initial key
 
-        // Store a reference to the event listener function
-        this.keydownListener = this.handleKeyDown.bind(this);
-        this.keyupListener = this.handleKeyUp.bind(this);
-
-        // Add event listeners
-        document.addEventListener('keydown', this.keydownListener);
-        document.addEventListener('keyup', this.keyupListener);
-
+        if(canBeControlled){
+            // Store a reference to the event listener function
+            this.keydownListener = this.handleKeyDown.bind(this);
+            this.keyupListener = this.handleKeyUp.bind(this);
+    
+            // Add event listeners
+            document.addEventListener('keydown', this.keydownListener);
+            document.addEventListener('keyup', this.keyupListener);
+            this.shouldBeSynced = true;
+        }
         GameEnv.player = this;
     }
 
@@ -109,12 +111,16 @@ export class Player2 extends Character{ //for lopez code
 
     // Player updates
     update() {
-        if (this.isAnimation("a")) {
-            //if (this.movement.left) this.x -= this.speed;  // Move to left
-            GameEnv.backgroundSpeed = this.currentSpeed;
+        if (this.isAnimation("a") &&this.y <=this.bottom) {
+            console.log(this.speed)
+            if (this.movement.left) this.x -= this.speed/2;
+            GameEnv.backgroundSpeed = this.currentSpeed-this.speed/2;
         }
-        if (this.isAnimation("d")) {
-            //if (this.movement.right) this.x += this.speed;  // Move to right
+        else if (this.isAnimation("d") &&this.y <=this.bottom) {
+            if (this.movement.right) this.x += this.speed/2;
+            GameEnv.backgroundSpeed = this.currentSpeed+this.speed/2;
+        }
+        else{
             GameEnv.backgroundSpeed = this.currentSpeed;
         }
         if (this.isGravityAnimation("w")) {
@@ -173,6 +179,7 @@ export class Player2 extends Character{ //for lopez code
 
         // Perform super update actions
         super.update();
+        this.serialize();
     }
 
     // Player action on collisions
@@ -252,6 +259,18 @@ export class Player2 extends Character{ //for lopez code
                              goomba.remove(); //remove goomba sprite from current level
                         },600)
                     }
+                }
+            }
+        }
+
+        if (this.collisionData.touchPoints.other.id === "power") {
+            this.scaledCharacterHeightRatio = 2/10;
+            this.size();
+            for(let i = 0; i<GameEnv.gameObjects.length;i++){//loop through current gameObjects
+                if(GameEnv.gameObjects[i].isMushroom){ //look for object with (isGoomba==true) tag
+                    //get goomba canvas
+                    GameEnv.gameObjects[i].canvas.remove();
+                    GameEnv.gameObjects.splice(i,1);
                 }
             }
         }

@@ -4,7 +4,7 @@ import GameControl from './GameControl.js'
 
 export class Player extends Character{
     // constructors sets up Character object 
-    constructor(canvas, image, speedRatio, playerData){
+    constructor(canvas, image, speedRatio, playerData,canBeControlled){
         super(canvas, 
             image, 
             speedRatio,
@@ -19,7 +19,9 @@ export class Player extends Character{
         this.movement = {left: true, right: true, down: true};
         this.isIdle = true;
         this.stashKey = "d"; // initial key
+        this.inDash = false;
 
+        if(canBeControlled){
         // Store a reference to the event listener function
         this.keydownListener = this.handleKeyDown.bind(this);
         this.keyupListener = this.handleKeyUp.bind(this);
@@ -27,7 +29,8 @@ export class Player extends Character{
         // Add event listeners
         document.addEventListener('keydown', this.keydownListener);
         document.addEventListener('keyup', this.keyupListener);
-
+        this.shouldBeSynced = true;
+        }
         GameEnv.player = this;
     }
 
@@ -113,9 +116,18 @@ export class Player extends Character{
         if (this.isGravityAnimation("w")) {
             if (this.movement.down) this.y -= (this.bottom * .4);  // jump 11% higher than bottom
         } 
+        if (this.isAnimation("s")) {
+            if(!this.inDash){
+                this.x += GameEnv.innerWidth*.1 * (this.stashKey=="d"?1:-1);
+                GameEnv.backgroundSpeed = GameEnv.innerWidth*.1 * (this.stashKey=="d"?1:-1);
+                this.inDash = true;
+                setTimeout(()=>{this.inDash = false},1000);
+            }
+        } 
 
         // Perform super update actions
         super.update();
+        this.serialize();
     }
 
     // Player action on collisions
@@ -201,6 +213,18 @@ export class Player extends Character{
             }
         }
 
+        if (this.collisionData.touchPoints.other.id === "power") {
+            this.scaledCharacterHeightRatio = 2/10;
+            this.size();
+            for(let i = 0; i<GameEnv.gameObjects.length;i++){//loop through current gameObjects
+                if(GameEnv.gameObjects[i].isMushroom){ //look for object with (isGoomba==true) tag
+                    //get goomba canvas
+                    GameEnv.gameObjects[i].canvas.remove();
+                    GameEnv.gameObjects.splice(i,1);
+                }
+            }
+        }
+
         if (this.collisionData.touchPoints.other.id === "enemy2") {
             //reload current level (death)
             GameControl.transitionToLevel(GameEnv.levels[GameEnv.levels.indexOf(GameEnv.currentLevel)]);
@@ -217,6 +241,9 @@ export class Player extends Character{
                 // player active
                 this.isIdle = false;
             }
+            if (event.key === "s"){
+                this.canvas.style.filter = "invert(1)";
+            }
         }
     }
 
@@ -226,6 +253,9 @@ export class Player extends Character{
             const key = event.key;
             if (event.key in this.pressedKeys) {
                 delete this.pressedKeys[event.key];
+            }
+            if (event.key === "s"){
+                this.canvas.style.filter = "invert(0)";
             }
             this.setAnimation(key);  
             // player idle
