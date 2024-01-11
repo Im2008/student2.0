@@ -4,7 +4,7 @@ import GameControl from './GameControl.js'
 
 export class Player2 extends Character{ //for lopez code
     // constructors sets up Character object 
-    constructor(canvas, image, speedRatio, playerData,speedLimit,canBeControlled){
+    constructor(canvas, image, speedRatio, playerData,canBeControlled){
         super(canvas, 
             image, 
             speedRatio,
@@ -15,7 +15,7 @@ export class Player2 extends Character{ //for lopez code
         // Player Data is required for Animations
         this.playerData = playerData;
 
-        this.speedLimit = speedLimit;
+        this.speedLimit = 100;
         this.currentSpeed = 0;
         this.acceleration = 0.11; // Adjust based on preference
         this.deceleration = 0.1; // Adjust based on preference 
@@ -51,6 +51,7 @@ export class Player2 extends Character{ //for lopez code
             this.stashKey = key;
             this.playerData.w = this.playerData.wd;
         }
+
         // set frame and idle frame
         this.setFrameY(animation.row);
         this.setMaxFrame(animation.frames);
@@ -141,6 +142,14 @@ export class Player2 extends Character{ //for lopez code
             // Decelerate when no movement keys are pressed
             this.currentSpeed *= (1 - this.deceleration);
         }
+        if (this.isAnimation("s")) {
+            if(!this.inDash){
+                this.x += GameEnv.innerWidth*.1 * (this.stashKey=="d"?1:-1);
+                GameEnv.backgroundSpeed = GameEnv.innerWidth*.1 * (this.stashKey=="d"?1:-1);
+                this.inDash = true;
+                setTimeout(()=>{this.inDash = false},1000);
+            }
+        } 
 
         // Apply speed limit
         if (Math.abs(this.currentSpeed) > this.speedLimit) {

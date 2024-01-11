@@ -122,5 +122,4 @@ export class GameEnv {
         this.isInverted = !this.isInverted;  // switch boolean value
     }
 }
-
 export default GameEnv;
