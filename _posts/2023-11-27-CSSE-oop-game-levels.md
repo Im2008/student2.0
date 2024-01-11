@@ -221,7 +221,7 @@ image: /images/platformer/backgrounds/hills.png
       },
       powers: {
         mushroom: {// fake enemy
-          src: "/images/platformer/sprites/mushroom.png",
+          src: "/images/images/platformer/sprites/milk.png",
           type: 0,
           width: 4000,
           height: 4000,
