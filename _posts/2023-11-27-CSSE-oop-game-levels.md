@@ -133,7 +133,7 @@ image: /images/platformer/backgrounds/hills.png
         start: { src: "/images/platformer/backgrounds/Joke.jpg" },
         joke: { src: "/images/platformer/backgrounds/Joke.jpg" },
         hills: { src: "/images/platformer/backgrounds/hills.png" },
-        geometry: { src: "/images/platformer/backgrounds/GD_Background.png" },
+        geometry: { src: "/images/images/platformer/backgrounds/Happy_Face.png" },
         planet: { src: "/images/platformer/backgrounds/planet.jpg" },
         greenPlanet: { src: "/images/platformer/backgrounds/greenPlanet.jpg" },
         school: { src: "/images/platformer/backgrounds/Del_Norte.png" }, 
