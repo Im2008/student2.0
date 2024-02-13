@@ -12,6 +12,19 @@ image: /images/platformer/backgrounds/hills.png
       position: relative;
         z-index: 2; /*Ensure the controls are on top*/
     }
+    .jecky {
+      width: 105px;
+      height 200px;
+      border-style: double;
+      border-width: thick;
+      border-color: black;  
+      outline-style: double;
+      background-color: grey;
+      padding-top: 60px;
+      position: fixed;
+        z-index 3;
+
+    }
     .sidenav {
       position: fixed;
       height: 100%; /* 100% Full-height */
@@ -41,11 +54,12 @@ image: /images/platformer/backgrounds/hills.png
       border-width: medium;
     }
     canvas {
+    z-index: 1;
     animation: fadeInAnimation ease-in 1s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     border-style: double;
-    border-color: white;
+    border-color: red;
     border-width: 3px;
     }
  
@@ -74,27 +88,28 @@ image: /images/platformer/backgrounds/hills.png
 </div>
 
 
-
+<div class= "jecky"></div>
 <!-- Prepare DOM elements -->
 <!-- Wrap both the canvas and controls in a container div -->
+
 <div id="canvasContainer">
     <div id="gameBegin" hidden>
-        <button id="startGame">Start Game</button>
+      <button id="startGame">Start Game</button>
     </div>
     <div id="controls"> <!-- Controls -->
         <!-- Background controls -->
-        <button id="toggleCanvasEffect">Invert</button>
+      <button id="toggleCanvasEffect">Invert</button>
     </div>
     <div id="settings"> <!-- Controls -->
-        <!-- Background controls -->
-        <button id="toggleSettingsBar">Settings</button>
+      <!-- Background controls -->
+      <button id="toggleSettingsBar">Settings</button>
     </div>
     <div id="leaderboard"> <!-- Controls -->
-        <!-- Background controls -->
-        <button id="leaderboardButton">Leaderboard</button>
+      <!-- Background controls -->
+      <button id="leaderboardButton">Leaderboard</button>
     </div>
     <div id="gameOver" hidden>
-        <button id="restartGame">Restart</button>
+      <button id="restartGame">Restart</button>
     </div>
     <audio id="audioElement" loop hidden>
       <source id="mp3Source">
@@ -133,7 +148,7 @@ image: /images/platformer/backgrounds/hills.png
         start: { src: "/images/platformer/backgrounds/Joke.jpg" },
         joke: { src: "/images/platformer/backgrounds/Joke.jpg" },
         hills: { src: "/images/platformer/backgrounds/hills.png" },
-        geometry: { src: "/images/images/platformer/backgrounds/Happy_Face.png" },
+        geometry: { src: "/images/images/platformer/backgrounds/angry.jpeg" },
         planet: { src: "/images/platformer/backgrounds/planet.jpg" },
         greenPlanet: { src: "/images/platformer/backgrounds/greenPlanet.jpg" },
         school: { src: "/images/platformer/backgrounds/Del_Norte.png" }, 
@@ -217,11 +232,13 @@ image: /images/platformer/backgrounds/hills.png
       audio: {
           pink: { src: "/audio/platformer/pink.mp3" },
           space: { src: "/audio/platformer/space.mp3" },
-          honor: { src: "/audio/platformer/honor.mp3" }
+          honor: { src: "/audio/platformer/honor.mp3" },
+          cute: { src: "/audio/platformer/UWU.mp3" },
+          uncute: { src: "/audio/platofmrer/Harharhar.mp3" }
       },
       powers: {
         mushroom: {// fake enemy
-          src: "/images/images/platformer/sprites/milk.png",
+          src: "/images/platformer/sprites/mushroom.png",
           type: 0,
           width: 4000,
           height: 4000,
@@ -334,9 +351,9 @@ image: /images/platformer/backgrounds/hills.png
     // Game screens
 
     //geometry dash background with mario character
-    new GameLevel( {tag: "geometry", background: assets.backgrounds.geometry, platform: assets.platforms.grass, player: assets.players.mario, tube: assets.obstacles.tube, scaffold: assets.scaffolds.brick, power: assets.powers.mushroom, callback: testerCallBack } );
+    new GameLevel( {tag: "geometry", background: assets.backgrounds.geometry, platform: assets.platforms.grass, player: assets.players.mario, tube: assets.obstacles.tube, scaffold: assets.scaffolds.brick, power: assets.powers.mushroom, audio: assets.audio.pink, callback: testerCallBack } );
     //monkey in an alien world
-    new GameLevel( {tag: "alien", background: assets.backgrounds.planet, platform: assets.platforms.alien, player: assets.players.monkey, enemy: assets.enemies.goomba, callback: testerCallBack } );
+    new GameLevel( {tag: "alien", background: assets.backgrounds.planet, platform: assets.platforms.alien, player: assets.players.monkey, enemy: assets.enemies.goomba, audio: assets.audio.space, callback: testerCallBack } );
     //mr lopez in a classic mario level
     new GameLevel( {tag: "lopez", background: assets.backgrounds.clouds, background2: assets.backgrounds.hills, platform: assets.platforms.grass, scaffold: assets.scaffolds.grass, player: assets.players.lopez, enemy: assets.enemies.goomba, audio: assets.audio.honor, power:assets.powers.mushroom, callback: testerCallBack } );
     //level based on Trystan's game from last tri.

@@ -25,41 +25,48 @@ courses: { csse: {week: 17}}
         <th>Sidebar & Local Storage</th>
         <th>Timer and Leaderboard</th>
         <th>Dash and Animation</th>
+        <th>Enemies</th>
     </tr>
     <tr>
         <td>Score</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
+        <td>0.7/1</td>
+        <td>0.9/1</td>
+        <td>n/a</td>
+        <td>1/1 (us)</td>
+        <td>0.95/1</td>
+        <td>n/a</td>
+        <td>0.95/1</td>
     </tr>
     <tr>
         <td>Extras</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
+        <td>Different textures of platforms</td>
+        <td>n/a</td>
+        <td>Dashing</td>
+        <td>n/a</td>
+        <td>Changed Timer looks,
+        positioned the timer differnetly</td>
+        <td>Added Mushrooms, makes the character bigger</td>
+        <td>Made the goomba squash when both lopez or monkey step on it </td>
     </tr>
     <tr>
         <td>Grader Verifications</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
+        <td>Gavin Copley</td>
+        <td>Gabriel</td>
+        <td>n/a</td>
+        <td>Us</td>
+        <td>Katie</td>
+        <td>Sedan</td>
+        <td>Daniel</td>
     </tr>
     <tr>
         <td>Github files and or key commits</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
-        <td>d</td>
+        <td>Platform.js, OOP-game-levels.md, GameObject.js, GameLevel.js</td>
+        <td>LocalStorage.js, OOP-game-levels.md</td>
+        <td>player2.js, OOP-game-levels.md,</td>
+        <td>LocalStorage.js,
+        OOP-game-levels.md.</td>
+        <td>Background.js, Background2.js, OOP-game-levels.md, GameEnv.js, GameLevel.js</td>
+        <td>player.js, player2.js, OOP-game-levels.md</td>
+        <td>Goomba.js, GameObject.js, OOP-game-levels.md, player.js, player2.js</td>
     </tr>
 </table>
