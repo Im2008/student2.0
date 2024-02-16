@@ -152,6 +152,8 @@ export class Player extends Character{
 
             GameEnv.backgroundHillsSpeed = 0;
             GameEnv.backgroundMountainsSpeed = 0;
+            GameEnv.backgroundHeckSpeed = 0;
+
         }
 
         //Prevent Player from Leaving from Screen
@@ -160,6 +162,8 @@ export class Player extends Character{
 
             GameEnv.backgroundHillsSpeed = 0;
             GameEnv.backgroundMountainsSpeed = 0;
+            GameEnv.backgroundHeckSpeed = 0;
+            
         }
 
         // Perform super update actions
@@ -381,9 +385,11 @@ export class Player extends Character{
             if (this.isKeyActionLeft(key) && this.x > 2) {
                 GameEnv.backgroundHillsSpeed = -0.4;
                 GameEnv.backgroundMountainsSpeed = -0.1;
+                GameEnv.backgroundHeckSpeed = -0.4;
             } else if (this.isKeyActionRight(key)) {
                 GameEnv.backgroundHillsSpeed = 0.4;
                 GameEnv.backgroundMountainsSpeed = 0.1;
+                GameEnv.backgroundHeckSpeed = 0.4;
             } 
             /* else if (this.isKeyActionDash(key) && this.directionKey === "a") {
                  GameEnv.backgroundHillsSpeed = -0.4;
@@ -417,6 +423,7 @@ export class Player extends Character{
             // parallax background speed halts on key up
             if (this.isKeyActionLeft(key) || this.isKeyActionRight(key) || this.isKeyActionDash(key)) {
                 GameEnv.backgroundHillsSpeed = 0;
+                GameEnv.backgroundHeckSpeed = 0;
                 GameEnv.backgroundMountainsSpeed = 0;
             }
         }

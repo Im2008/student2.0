@@ -10,6 +10,8 @@ courses: { csse: {week: 24} }
 
 <list>
     <ol>
+        <li> Socket.io Servers & AWS </li>
+        <li> Chat Filter System </li>
         <li> Background Hills Canvas drawing </li>
         <li> Clouds Background </li>
         <li> "ad" bug fix </li>
@@ -17,7 +19,102 @@ courses: { csse: {week: 24} }
     </ol>
 </list>
 
-<h2> BG hills canvas drawing </h2>
+<h2> Socket.io Servers & AWS </h2>
+
+<p> The Socket.io Servers allow multiplayer to be accessed to many players in the game. In this code, we need to define the properties of the socket as javascript isn't gonna recognize them in its database. Then we can put these codes in an io server, by which it'll allow many people to access a server at a time. This server is included with AWS, by which you have to pay for or connect to.</p>
+
+```
+export class Socket{
+/**
+ * @property {boolean} shouldBeSynced - should we be connected to the server
+ * @property {Object} socket - used by Multiplayer, creates socket for the client
+ * @property {string} socketID - id given by the websocket server when a player connects
+ */
+
+    static shouldBeSynced = true;
+    //static socket = io("wss://platformer.nighthawkcodingsociety.com"); //aws server
+    static socket = io(`ws://${window.location.host.split(":")[0]}:3000`); //local server
+    static socketId;
+    static {
+        this.socket.on("id",(id)=>{this.socketId = id});
+    }
+
+    constructor(){throw new Error('Socket is a static class and cannot be instantiated.');}
+
+    static sendData(key,value) {
+        if (this.shouldBeSynced == false){return "offline"};
+        if (typeof key != "string"){return "key is not a string"};
+        this.socket.emit(key,value);
+    }
+
+    static createListener(key, func){
+        if (this.shouldBeSynced == false){return "offline"};
+        if (typeof key != "string"){return "key is not a string"};
+        this.socket.on(key,func);
+    }
+
+    static removeListener(key){
+        if (typeof key == "string"){return "key is not a string"};
+        this.socket.off(key)
+    }
+
+    static removeAllListeners(){
+        this.socket.removeAllListeners();
+    }
+
+    static changeStatus(){
+        this.shouldBeSynced = !this.shouldBeSynced;
+        if(this.shouldBeSynced){
+            this.removeAllListeners();
+
+            GameControl.transitionToLevel(GameEnv.levels[GameEnv.levels.indexOf(GameEnv.currentLevel)]);
+        } else{
+            GameControl.transitionToLevel(GameEnv.levels[GameEnv.levels.indexOf(GameEnv.currentLevel)]);
+        }
+        return this.shouldBeSynced;
+    }
+}
+export default Socket;
+```
+
+<h2> Chat Filter System </h2>
+
+<p> The chat filter system is a system where if anybody says a restricted word, then the word would be censored out. In this case, we need to add a constructor class to make the array inside the constructor class defined, so that it cna count every single word in that array.</p>
+
+```
+//Put this in chat.js:
+//Constructor class that will be used
+constructor(wordsToAdd){
+        this.prohibitedWords = ['westview', 'pee', 'poo', 
+        'multiplayer', 'multi', 'leaderboard', 'enemies', 
+        'gamelevels', 'interactions', 'sass', 'sassy', 'sas', 
+        '911', 'die', 'luigi', 'peach', 'bowser', 'mario', 
+        'mr.mortensen', 'mr. mortensen', 'mortensen', 'lopez', 
+        'mr.lopez', 'mr. lopez','mister mortensen', 'mister lopez', 
+        'aws', 'amazonwebservices', 'amazon', 'amazonweb'];
+
+        this.prohibitedWords.concat(wordsToAdd);
+    }
+
+    soundSource = "/game_levels_mp/assets/audio/discord-ping.mp3";
+    soundArray = [];
+
+    sendMessage(message){
+        message = this.parseMessage(message);  
+        Multiplayer.sendData("message",message);
+    }
+
+//forEach refers to EVERY word, meaning if you don't want it to censor all words, just delete that version
+//This code replaces every word in this case with "I LOVE CSSE!"
+//then the message is returned early.
+    parseMessage(message){
+        this.prohibitedWords.forEach(word => {
+            const regex = new RegExp('\\b' + word + '\\b', 'gi');
+            message = message.replace(regex, 'I Love CSSE! '.repeat(word.length));
+        });
+        return message;
+    }
+```
 
 <p> the background hills canvas drawing puts the hills background, duplicates the background on both the left and right side, and created into separate parts so when the character goes to the left or right, the background will go the opposite way that the player is going. To ensure that the player doesn't cut out the background, this is the code that I added </p>
 
@@ -149,7 +246,8 @@ backgrounds: {
 const hillsGameObjects = [
         // GameObject(s), the order is important to z-index...
         { name: 'mountains', id: 'background', class: BackgroundMountains,  data: this.assets.backgrounds.mountains },
-        { name: 'clouds', id: 'background', class: BackgroundClouds, data: this.assets.backgrounds.clouds }, // THIS ONE PLEASE PLEASE
+        // vvvvv Put in this one below vvvvv
+        { name: 'clouds', id: 'background', class: BackgroundClouds, data: this.assets.backgrounds.clouds },
         { name: 'hills', id: 'background', class: BackgroundHills, data: this.assets.backgrounds.hills },
         { name: 'grass', id: 'platform', class: Platform, data: this.assets.platforms.grass },
         { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.block, xPercentage: 0.2, yPercentage: 0.85 },

@@ -7,6 +7,7 @@ import BackgroundHills from './BackgroundHills.js';
 import BackgroundMountains from './BackgroundMountains.js';
 import BackgroundTransitions from './BackgroundTransitions.js';
 import BackgroundClouds from './BackgroundClouds.js';
+import BackgroundHeck from './BackgroundHeck.js';
 import Platform from './Platform.js';
 import JumpPlatform from './JumpPlatform.js';
 import Player from './Player.js';
@@ -190,6 +191,7 @@ const GameSetup = {
         avenida: { src: "/images/platformer/backgrounds/avenidawide3.jpg" },
         mountains: { src: "/images/platformer/backgrounds/mountains.jpg" },
         clouds : { src: "/images/platformer/backgrounds/clouds.png"},
+        heck : { src: "/images/platformer/backgrounds/mountaining.png" },
         space: { src: "/images/platformer/backgrounds/planet.jpg" },
         castles: { src: "/images/platformer/backgrounds/castles.png" },
         loading: { src: "/images/platformer/backgrounds/greenscreen.png" },
@@ -387,12 +389,33 @@ const GameSetup = {
           { name: 'goombaSpecial', id: 'goomba', class: Goomba, data: this.assets.enemies.goomba, xPercentage:  0.75, minPosition: 0.5 }, //this special name is used for random event 2 to make sure that only one of the Goombas ends the random event
           { name: 'flyingGoomba', id: 'flyingGoomba', class: FlyingGoomba, data: this.assets.enemies.flyingGoomba, xPercentage:  0.5, minPosition:  0.05},
           { name: 'flyingGoomba', id: 'flyingGoomba', class: FlyingGoomba, data: this.assets.enemies.flyingGoomba, xPercentage:  0.9, minPosition: 0.5},
-          { name: 'lopez', id: 'player', class: Player, data: this.assets.players.lopez },
+          { name: 'monkey', id: 'player', class: Player, data: this.assets.players.lopez },
           { name: 'tube', id: 'tube', class: Tube, data: this.assets.obstacles.tube },
           { name: 'complete2', id: 'background', class: BackgroundTransitions,  data: this.assets.backgrounds.complete2 },
         ];
         // Avenida Game Level added to the GameEnv ...
         new GameLevel( {tag: "space", callback: this.playerOffScreenCallBack, objects: spaceGameObjects} );
+        
+        const upperWorldObjects = [
+          // GameObject(s), the order is important to z-index...
+          { name: 'avenida ', id: 'background', class: Background,  data: this.assets.backgrounds.avenida },
+          { name: 'clouds', id: 'background', class: BackgroundClouds, data: this.assets.backgrounds.clouds },
+          { name: 'heck', id: 'background', class: BackgroundHeck, data: this.assets.backgrounds.heck },
+          { name: 'grass', id: 'platform', class: Platform, data: this.assets.platforms.grass },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.block, xPercentage: 0.2, yPercentage: 0.85 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.block, xPercentage: 0.4, yPercentage: 0.85 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.block, xPercentage: 0.401, yPercentage: 0.85 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.block, xPercentage: 0.8, yPercentage: 1 },
+          { name: 'itemBlock', id: 'jumpPlatform', class: JumpPlatform, data: this.assets.platforms.itemBlock, xPercentage: 0.4, yPercentage: 0.65 }, //item block is a platform
+          { name: 'goomba', id: 'goomba', class: Goomba, data: this.assets.enemies.goomba, xPercentage: 0.3, yPercentage: 1, minPosition: 0.05},
+          { name: 'goomba', id: 'goomba', class: Goomba, data: this.assets.enemies.goomba, xPercentage:  0.5, yPercentage: 1, minPosition: 0.3 },
+          { name: 'goombaSpecial', id: 'goomba', class: Goomba, data: this.assets.enemies.goomba, xPercentage:  0.75, yPercentage: 1, minPosition: 0.5 }, //this special name is used for random event 2 to make sure that only one of the Goombas ends the random event
+          { name: 'monkey', id: 'player', class: Player, data: this.assets.players.monkey },
+          { name: 'tube', id: 'tube', class: Tube, data: this.assets.obstacles.tube },
+          { name: 'loading', id: 'background', class: BackgroundTransitions,  data: this.assets.backgrounds.loading },
+        ];
+
+        new GameLevel( {tag: "Cloudyworld", callback: this.playerOffScreenCallBack, objects: upperWorldObjects } );
 
         // Game Over Level definition...
         const endGameObjects = [
