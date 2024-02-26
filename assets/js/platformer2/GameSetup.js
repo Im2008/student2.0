@@ -174,6 +174,7 @@ const GameSetup = {
         alien: { src: "/images/platformer/platforms/alien.png" },
         bricks: { src: "/images/platformer/platforms/brick_wall.png" },
         block: { src: "/images/platformer/platforms/brick_block.png" }, //MAY need 3 new variables: sizeRatio, widthRatio, and heightRatio
+        ground : { src: "/images/platformer/platforms/stardew.png" },
         itemBlock: {
           src: "/images/platformer/platforms/mario_block_spritesheet_v2.png",
           sizeRatio: 83.2,
@@ -197,7 +198,8 @@ const GameSetup = {
         loading: { src: "/images/platformer/backgrounds/greenscreen.png" },
         complete: { src: "/images/platformer/backgrounds/OneStar.png" },
         complete2: { src: "/images/platformer/backgrounds/TwoStar.png" },
-        end: { src: "/images/platformer/backgrounds/Congratulations!!!.png" }
+        end: { src: "/images/platformer/backgrounds/Congratulations!!!.png" },
+        travis: { src: "/images/platformer/backgrounds/travis.jpeg" }
       },
       players: {
         mario: {
@@ -241,7 +243,34 @@ const GameSetup = {
           d: { row: 2, frames: 3, idleFrame: { column: 1, frames: 0 } }, // Left Movement 
           runningLeft: { row: 5, frames: 3, idleFrame: {column: 1, frames: 0} },
           runningRight: { row: 4, frames: 3, idleFrame: {column: 1, frames: 0} },
-        }
+        },
+        monkey: {
+          src: "/images/platformer/sprites/monkey.png",
+          width: 40,
+          height: 40,
+          scaleSize: 80,
+          speedRatio: 0.7,
+          w: { row: 9, frames: 15 },
+          wa: { row: 9, frames: 15 },
+          wd: { row: 9, frames: 15 },
+          a: { row: 1, frames: 15, idleFrame: { column: 7, frames: 0 } },
+          s: { row: 12, frames: 15 },
+          d: { row: 0, frames: 15, idleFrame: { column: 7, frames: 0 } }
+        },
+        buffalo: {
+          src: "/images/platformer/sprites/buffalo.png", 
+          width: 42.5,
+          height: 42.4285714286,
+          scaleSize: 60,
+          speedRatio: 0.7,
+          w: {row: 2, frames: 3},
+          wa: {row: 2, frames: 3},
+          wd: {row: 2, frames: 3},
+          idle: { row: 6, frames: 1, idleFrame: {column: 1, frames: 0} },
+          a: { row: 4, frames: 3, idleFrame: { column: 1, frames: 0 } }, // Right Movement
+          s: {row: 3, frames: 3}, // Stop the movement 
+          d: { row: 2, frames: 3, idleFrame: { column: 1, frames: 0 } }, // Left Movement 
+        },
       },
       enemies: {
         goomba: {
@@ -258,7 +287,15 @@ const GameSetup = {
           height: 452,
           scaleSize: 60,
           speedRatio: 0.7,
-        }
+        },
+        egg: {
+          src: "/images/platformer/sprites/egg.png",
+          width: 600,
+          height: 640,
+          scaleSize: 60,
+          speedRatio: 0.7,
+          xPercentage: 0.6,
+        },
       }
     },
 
@@ -303,7 +340,8 @@ const GameSetup = {
           "Fun Fact #6" : "Mario's original name was Jumpman.",
           "Fun Fact #7" : "March 10th is known as Mario Day because the abbreviation for March 10th (Mar10) looks like Mario.",
           "Fun Fact #8" : " Mario was originally a carpenter, not a plumber.",
-          "Fun Fact #9" : " There are actually lyrics to the Mario theme song."
+          "Fun Fact #9" : " There are actually lyrics to the Mario theme song.",
+          "Fun Fact #10" : " The 49ers lost the Superbowl so Taylor Swift could promote a new song with Travis. "
           }
         function generate(){
           var nums = Object.keys(fun_facts);
@@ -402,17 +440,16 @@ const GameSetup = {
           { name: 'clouds', id: 'background', class: BackgroundClouds, data: this.assets.backgrounds.clouds },
           { name: 'heck', id: 'background', class: BackgroundHeck, data: this.assets.backgrounds.heck },
           { name: 'grass', id: 'platform', class: Platform, data: this.assets.platforms.grass },
-          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.block, xPercentage: 0.2, yPercentage: 0.85 },
-          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.block, xPercentage: 0.4, yPercentage: 0.85 },
-          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.block, xPercentage: 0.401, yPercentage: 0.85 },
-          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.block, xPercentage: 0.8, yPercentage: 1 },
+          { name: 'ground', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.ground, xPercentage: 0.2, yPercentage: 0.85 },
+          { name: 'ground', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.ground, xPercentage: 0.4, yPercentage: 0.85 },
+          { name: 'ground', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.ground, xPercentage: 0.401, yPercentage: 0.85 },
           { name: 'itemBlock', id: 'jumpPlatform', class: JumpPlatform, data: this.assets.platforms.itemBlock, xPercentage: 0.4, yPercentage: 0.65 }, //item block is a platform
-          { name: 'goomba', id: 'goomba', class: Goomba, data: this.assets.enemies.goomba, xPercentage: 0.3, yPercentage: 1, minPosition: 0.05},
-          { name: 'goomba', id: 'goomba', class: Goomba, data: this.assets.enemies.goomba, xPercentage:  0.5, yPercentage: 1, minPosition: 0.3 },
-          { name: 'goombaSpecial', id: 'goomba', class: Goomba, data: this.assets.enemies.goomba, xPercentage:  0.75, yPercentage: 1, minPosition: 0.5 }, //this special name is used for random event 2 to make sure that only one of the Goombas ends the random event
-          { name: 'monkey', id: 'player', class: Player, data: this.assets.players.monkey },
+          { name: 'egg', id: 'egg', class: Goomba, data: this.assets.enemies.egg, xPercentage: 0.3, yPercentage: 1, minPosition: 0.05},
+          { name: 'egg', id: 'egg', class: Goomba, data: this.assets.enemies.egg, xPercentage:  0.5, yPercentage: 1, minPosition: 0.3 },
+          { name: 'egg', id: 'egg', class: Goomba, data: this.assets.enemies.egg, xPercentage:  0.75, yPercentage: 1, minPosition: 0.5 }, //this special name is used for random event 2 to make sure that only one of the Goombas ends the random event
+          { name: 'buffalo', id: 'player', class: Player, data: this.assets.players.buffalo },
           { name: 'tube', id: 'tube', class: Tube, data: this.assets.obstacles.tube },
-          { name: 'loading', id: 'background', class: BackgroundTransitions,  data: this.assets.backgrounds.loading },
+          { name: 'travis', id: 'background', class: BackgroundTransitions,  data: this.assets.backgrounds.travis },
         ];
 
         new GameLevel( {tag: "Cloudyworld", callback: this.playerOffScreenCallBack, objects: upperWorldObjects } );
