@@ -264,12 +264,12 @@ const GameSetup = {
           scaleSize: 60,
           speedRatio: 0.7,
           w: {row: 2, frames: 3},
-          wa: {row: 2, frames: 3},
-          wd: {row: 2, frames: 3},
+          wa: {row: 1, frames: 3},
+          wd: {row: 1, frames: 3},
           idle: { row: 6, frames: 1, idleFrame: {column: 1, frames: 0} },
-          a: { row: 4, frames: 3, idleFrame: { column: 1, frames: 0 } }, // Right Movement
-          s: {row: 3, frames: 3}, // Stop the movement 
-          d: { row: 2, frames: 3, idleFrame: { column: 1, frames: 0 } }, // Left Movement 
+          a: { row: 3, frames: 3, idleFrame: { column: 1, frames: 0 } }, // Right Movement
+          s: {row: 2, frames: 3}, // Stop the movement 
+          d: { row: 1, frames: 3, idleFrame: { column: 1, frames: 0 } }, // Left Movement 
         },
       },
       enemies: {
